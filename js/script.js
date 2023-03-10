@@ -378,7 +378,24 @@ const displayPagination = () => {
     document.querySelector('#next').disabled = true;
   }
   //Next page:
-  //document.querySelector('#next').addEventListener('click');
+  document.querySelector('#next').addEventListener('click', nextPage);
+  //Prev page:
+  document.querySelector('#prev').addEventListener('click', prevPage);
+};
+
+const nextPage = () => {
+  clearCurrentResults();
+  global.search.page++;
+  search();
+};
+const prevPage = () => {
+  clearCurrentResults();
+  global.search.page--;
+  search();
+};
+const clearCurrentResults = () => {
+  document.querySelector('#search-results').innerHTML = '';
+  document.querySelector('#pagination').innerHTML = '';
 };
 
 const showAlert = (msg, className) => {
@@ -416,7 +433,7 @@ const searchAPIData = async () => {
     //query string:
     showSpinner();
     const response = await fetch(
-      `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}`
+      `${API_URL}search/${global.search.type}?api_key=${API_KEY}&language=en-US&query=${global.search.term}&page=${global.search.page}`
     );
     const data = await response.json();
     hideSpinner();
